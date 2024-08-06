@@ -5,13 +5,11 @@ def create_server_connection(host_name, user_name, user_password):
     connection = None
     try:
         connection = mysql.connector.connect(
-            host=host_name,
-            user=user_name,
-            passwd=user_password
+           "CREATE DATABASE IF NOT EXISTS alx_book_store DEFAULT CHARACTER SET 'utf8'"
         )
         print("MySQL Server connection successful")
-    except Error as e:
-        print(f"The error '{e}' occurred")
+    except Error as err:
+        print(f"The error '{err}' occurred")
     return connection
 
 def create_database(connection, query):
