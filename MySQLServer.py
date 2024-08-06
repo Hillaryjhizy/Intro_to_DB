@@ -17,7 +17,7 @@ def create_database(connection, query):
     try:
         cursor.execute(query)
         print("Database 'alx_book_store' created successfully!")
-    except Error as e:
+    except Error as mysql.connector.Error:
         if "1007 (HY000)" in str(e):
             print("Database 'alx_book_store' already exists.")
         else:
