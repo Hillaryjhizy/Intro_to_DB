@@ -7,7 +7,7 @@ SELECT
     COLUMN_DEFAULT, 
     EXTRA
 FROM 
-    information_schema.columns
+    INFORMATION_SCHEMA.COLUMNS
 WHERE 
-    table_schema = 'alx_book_store' 
-    AND table_name = 'books';
+    TABLE_SCHEMA = 'alx_book_store' 
+    AND TABLE_NAME = 'Books';
