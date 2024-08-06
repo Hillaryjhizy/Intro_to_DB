@@ -1,44 +1,45 @@
-import mysql.connector
-from mysql.connector import Error
+-- Use the alx_book_store database
+USE alx_book_store;
 
-def create_server_connection(host_name, user_name, user_password, db_name):
-    connection = None
-    try:
-        connection = mysql.connector.connect(
-            host=host_name,
-            user=user_name,
-            passwd=user_password,
-            database=db_name
-        )
-        print("MySQL Server connection successful")
-    except Error as e:
-        print(f"The error '{e}' occurred")
-    return connection
+-- Create the Authors table
+CREATE TABLE IF NOT EXISTS Authors (
+    author_id INT AUTO_INCREMENT PRIMARY KEY,
+    author_name VARCHAR(215) NOT NULL
+);
 
-def execute_script_from_file(connection, file_path):
-    cursor = connection.cursor()
-    try:
-        with open(file_path, 'r') as file:
-            script = file.read()
-            cursor.execute(script, multi=True)
-        print("Script executed successfully!")
-    except Error as e:
-        print(f"The error '{e}' occurred")
+-- Create the Books table
+CREATE TABLE IF NOT EXISTS Books (
+    book_id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(130) NOT NULL,
+    author_id INT,
+    price DOUBLE NOT NULL,
+    publication_date DATE,
+    FOREIGN KEY (author_id) REFERENCES Authors(author_id)
+);
 
-# Connection details
-host_name = "localhost"
-user_name = "root"
-user_password = "S0lomon_Busayo@1997"
-db_name = "alx_book_store"
+-- Create the Customers table
+CREATE TABLE IF NOT EXISTS Customers (
+    customer_id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_name VARCHAR(215) NOT NULL,
+    email VARCHAR(215) NOT NULL,
+    address TEXT NOT NULL
+);
 
-# Connect to MySQL Server
-connection = create_server_connection(host_name, user_name, user_password, db_name)
+-- Create the Orders table
+CREATE TABLE IF NOT EXISTS Orders (
+    order_id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_id INT,
+    order_date DATE NOT NULL,
+    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id)
+);
 
-# Execute the SQL script
-script_path = "task_2.sql"
-execute_script_from_file(connection, script_path)
+-- Create the Order_Details table
+CREATE TABLE IF NOT EXISTS Order_Details (
+    orderdetail_id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT,
+    book_id INT,
+    quantity DOUBLE NOT NULL,
+    FOREIGN KEY (order_id) REFERENCES Orders(order_id),
+    FOREIGN KEY (book_id) REFERENCES Books(book_id)
+);
 
-# Close the connection
-if connection.is_connected():
-    connection.close()
-    print("MySQL connection is closed")
